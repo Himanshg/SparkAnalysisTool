@@ -2,7 +2,7 @@ package org.dos.analytics.provider
 
 import scala.io.StdIn.{readLine,readInt}
 import scala.io.Source
-import org.dos.analytics.constants
+import org.dos.analytics.constants.Constants
 
 class AlgoProvider {
     
@@ -13,7 +13,7 @@ class AlgoProvider {
       
       val option = readInt()
       
-      val algoClasses = Source.fromFile(constants.Constants.CONF_PATH + "/" + constants.Constants.USER_INPUT_TO_ALGO )
+      val algoClasses = Source.fromFile(Constants.CONF_PATH + "/" + Constants.USER_INPUT_TO_ALGO )
                               .getLines
                               .toArray
       

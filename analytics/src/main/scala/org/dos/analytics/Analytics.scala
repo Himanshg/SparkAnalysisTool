@@ -33,22 +33,23 @@ object Analytics {
                           
      /*
       * 1. Get Algo
-      * 2. Get data file path
+      * 2. Get data file path / mongo file 
       * 3. Get Params
       * 
       */
     
      val algoClass = getAlgo()
-     val filePath = "hdfs://master:9000/user/himanshu/input1/data.csv"
-     val params =    "lat,long"                  
      
-     val data = getData(filePath, params, sql)
+    /* Data Provider start  */
+     
+     val data = getData(sql)
      
      val fomattedData = formatData(data,algoClass.getClass.toString())
      
+     /*Data Provider Ends*/
      
-    
      algoClass.analyse(fomattedData)
+     
     
     
     
@@ -61,9 +62,9 @@ object Analytics {
     action.asInstanceOf[Utils]
   }
 
-  def getData(filePath: String, params: String, sql: SparkSession):DataFrame = {
+  def getData(sql: SparkSession):DataFrame = {
      val x = new DataProvider()
-     val data = x.getData(filePath, params, sql)
+     val data = x.getData(sql)
      data
      
   }
@@ -75,5 +76,6 @@ object Analytics {
      rddVector
      
   }
+  
 
 }

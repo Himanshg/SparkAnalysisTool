@@ -5,30 +5,32 @@ import org.apache.spark.sql.types.DoubleType
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
+import scala.io.StdIn.{readInt}
+
+import org.dos.analytics.constants.Constants
+import scala.io.Source
+import org.dos.analytics.dataSources.SourcesTrait
+
 
 class DataProvider {
   
-  //TODO: Add suppurt for multiple files
-  
-  def getData(filePath: String, params: String, sql: SparkSession):DataFrame = {
+  def getData(sql: SparkSession):DataFrame = {
     
-    //TODO: Read from a conf file => mapping of file with params 
-    val str = "lat long zero alt days date time" 
     
-    val fields = str.split(" ")
-                    .map(f => StructField(f,DoubleType,true))
-                          
-    val schema = StructType(fields)
+    val dataSourceClass = getSourceClass()
     
-    //TODO: generalize it for multiple sources of i/p
-    val dataDF = sql.read.schema(schema).csv(filePath.toString())
-    
-    dataDF.createOrReplaceTempView("data")
-    
-    val filterDF =  sql.sql("SELECT "+ params + " FROM data") 
-    
-    filterDF
+    dataSourceClass.getData(sql)
     
   }
+    
+  def getSourceClass() = {
+      
+    val x = new DataSourceProvider
+    val action = Class.forName(Constants.DATA_SOURCE_IMPLEMENTATION + x.getDataSource()).newInstance()
+    action.asInstanceOf[SourcesTrait]
+    
+    
+  }
+  
   
 }

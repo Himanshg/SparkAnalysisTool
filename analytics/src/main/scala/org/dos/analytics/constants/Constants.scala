@@ -6,6 +6,10 @@ object Constants {
   
   final val USER_INPUT_TO_ALGO = "userInputAlgo"
   
+  final val SOURCE_OF_INPUT = "sourceInput"
+  
   final val UTILS_IMPLEMENTATION = "org.dos.analytics.utils.implementations."
+  
+  final val DATA_SOURCE_IMPLEMENTATION = "org.dos.analytics.dataSources.implementations."
   
 }

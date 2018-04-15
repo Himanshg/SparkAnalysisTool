@@ -9,7 +9,8 @@ class DataSourceProvider {
   def getDataSource():String = {
       
       println("Enter Source of Input")
-    
+      
+      //TODO: to be automated
       println("0. for HDFS" + "\n" +
               "1. for MongoDb")
               

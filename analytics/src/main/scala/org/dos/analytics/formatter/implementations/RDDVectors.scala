@@ -1,4 +1,4 @@
-package org.dos.analytics.formatter.Implementations
+package org.dos.analytics.formatter.implementations
 
 import org.dos.analytics.formatter.InputFormatter
 import org.apache.spark.sql.DataFrame
@@ -8,8 +8,9 @@ import org.apache.spark.rdd.RDD
 
 class RDDVectors extends InputFormatter{
   
+  var inputData: RDD[Vector] = null
   
-   override def format(data: DataFrame):RDD[Vector] = {
+   override def format(data: DataFrame) {
     
     
       val parsedData = data.rdd.map( f => {
@@ -24,9 +25,11 @@ class RDDVectors extends InputFormatter{
       
     }) 
     
-    parsedData
-    
+    inputData = parsedData
   }
   
+  override def getData():Any =  {
+    inputData
+  }
   
 }

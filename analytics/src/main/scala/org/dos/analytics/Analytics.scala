@@ -19,6 +19,8 @@ import org.dos.analytics.provider.DataProvider
 import org.apache.spark.sql.DataFrame
 import org.dos.analytics.formatter.InputFormatter
 import org.apache.spark.rdd.RDD
+import org.dos.analytics.provider.DataFormatProvider
+import org.dos.analytics.formatter.InputFormatter
 
 object Analytics {
    
@@ -39,41 +41,44 @@ object Analytics {
       */
     
      val algoClass = getAlgo()
-     
     /* Data Provider start  */
      
      val data = getData(sql)
      
-     val fomattedData = formatData(data,algoClass.getClass.toString())
+     
+     val fomattedInput = formatData(data,algoClass.getClass.getSimpleName())
      
      /*Data Provider Ends*/
      
-     algoClass.analyse(fomattedData)
-     
+    algoClass.analyse(fomattedInput.getData())
     
     
     
   }
   
-  def getAlgo():Utils = {
+  def getAlgo() = {
     
     val x = new AlgoProvider()
     val action = Class.forName(Constants.UTILS_IMPLEMENTATION + x.getAlgo()).newInstance()
     action.asInstanceOf[Utils]
   }
 
-  def getData(sql: SparkSession):DataFrame = {
+  def getData(sql: SparkSession) = {
      val x = new DataProvider()
      val data = x.getData(sql)
      data
      
   }
 
-  def formatData(data: DataFrame, algoName: String):RDD[Vector] = {
+  def formatData(data: DataFrame, algoName: String) =  {
     
-     val formatInput = new RDDVectors
-     val rddVector = formatInput.format(data)
-     rddVector
+     val x = new DataFormatProvider(algoName)
+     val action = Class.forName(Constants.DATA_FORMAT_IMPLEMENTATION + x.getDataFormat).newInstance()
+     
+     val formatInput = action.asInstanceOf[InputFormatter]
+     
+     formatInput.format(data) 
+     formatInput
      
   }
   

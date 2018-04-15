@@ -8,9 +8,12 @@ import org.dos.analytics.utils.Utils
 
 object MultivariateStatsUtil extends Utils{
   
-  override def analyse(obsRdd: RDD[Vector]) {
-
-    val summary: MultivariateStatisticalSummary = Statistics.colStats(obsRdd)
+  override def analyse(rdd: Any) {
+    
+    
+    val data: RDD[Vector] = rdd.asInstanceOf[RDD[Vector]]
+    
+    val summary: MultivariateStatisticalSummary = Statistics.colStats(data)
 
     println("mean: " + summary.mean) // a dense vector containing the mean value for each column
     println("variance: " + summary.variance) // column-wise variance

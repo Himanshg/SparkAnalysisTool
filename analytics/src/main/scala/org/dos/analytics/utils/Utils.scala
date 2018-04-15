@@ -10,7 +10,7 @@ trait Utils {
     }
   
     
-    def analyse(rdd: RDD[Vector]) {
+    def analyse(rdd: Any) {
       
     }
 }

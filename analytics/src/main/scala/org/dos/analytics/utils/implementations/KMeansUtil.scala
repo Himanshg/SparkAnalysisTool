@@ -11,6 +11,7 @@ class KMeansUtil extends Utils{
   override def analyse(parsedData: Any){
      // Cluster the data into two classes using KMeans
     
+    //TODO: call I/p converter from any to required format
     val data: RDD[Vector] = parsedData.asInstanceOf[RDD[Vector]]
     
     println("Enter Number of Clusters: ")

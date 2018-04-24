@@ -14,12 +14,12 @@ import org.dos.analytics.dataSources.SourcesTrait
 
 class DataProvider {
   
-  def getData(sql: SparkSession):DataFrame = {
+  def getData():DataFrame = {
     
     
     val dataSourceClass = getSourceClass()
     
-    dataSourceClass.getData(sql)
+    dataSourceClass.getData()
     
   }
     

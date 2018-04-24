@@ -6,6 +6,7 @@ import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.linalg.Vector
 import org.apache.spark.rdd.RDD
 
+
 class RDDVectors extends InputFormatter{
   
   var inputData: RDD[Vector] = null
@@ -18,7 +19,17 @@ class RDDVectors extends InputFormatter{
       val arr:Array[Double] = new Array[Double](f.size)
       
       for (i<- 1 to f.size){
-        arr.update(i-1, f.getDouble(i-1))
+        
+        //TODO: remove the try catch block and handle manuakky
+        try{
+            arr.update(i-1, f.get(i-1).asInstanceOf[Double])  
+        }catch{
+          case e : Exception => {
+                arr.update(i-1, f.getInt(i-1).toDouble)
+             }
+        }
+        
+        
       }
       arr.foreach(println)
       Vectors.dense(arr)

@@ -11,7 +11,7 @@ import scala.io.Source
 
 import org.dos.analytics.constants.Constants
 import org.dos.analytics.provider.AlgoProvider
-import org.dos.analytics.formatter.Implementations.RDDVectors
+import org.dos.analytics.formatter.implementations.RDDVectors
 
 import org.dos.analytics.utils.Utils
 import org.dos.analytics.utils.implementations.{KMeansUtil,MultivariateStatsUtil}
@@ -25,14 +25,7 @@ import org.dos.analytics.formatter.InputFormatter
 object Analytics {
    
   def main ( args: Array[String]){
-    
-    val conf = new SparkConf().setMaster("local[2]")
-     
-    val sql = SparkSession.builder()
-                          .appName("analytics")
-                          .config(conf)
-                          .getOrCreate()        
-                          
+                       
      /*
       * 1. Get Algo
       * 2. Get data file path / mongo file 
@@ -43,7 +36,7 @@ object Analytics {
      val algoClass = getAlgo()
     /* Data Provider start  */
      
-     val data = getData(sql)
+     val data = getData()
      
      
      val fomattedInput = formatData(data,algoClass.getClass.getSimpleName())
@@ -63,9 +56,9 @@ object Analytics {
     action.asInstanceOf[Utils]
   }
 
-  def getData(sql: SparkSession) = {
+  def getData() = {
      val x = new DataProvider()
-     val data = x.getData(sql)
+     val data = x.getData()
      data
      
   }

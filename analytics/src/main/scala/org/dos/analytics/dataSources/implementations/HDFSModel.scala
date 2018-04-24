@@ -10,13 +10,24 @@ import org.dos.analytics.provider.HDFSFileProvider
 import com.typesafe.config.ConfigFactory
 import java.io.File
 import org.dos.analytics.constants.Constants
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkConf
 
 class HDFSModel extends SourcesTrait {
   
   
   //TODO: Add support for multiple files
   
-  override def getData(sql: SparkSession):DataFrame = {
+  override def getData():DataFrame = {
+    
+     /** SPARK CONNECTION **/
+    val conf = new SparkConf().setMaster(Constants.SPARK_THREADS)
+     
+    val sql = SparkSession.builder()
+                          .appName(Constants.APP_NAME)
+                          .config(conf)
+                          .getOrCreate()  
+    
     
     val filePath = getFile() 
     val params = getParams(filePath)
@@ -24,7 +35,7 @@ class HDFSModel extends SourcesTrait {
     
     val hdfsHome = getHdfs()
     
-    
+   
     val fields = params.split(" ")
                     .map(f => StructField(f,DoubleType,true))
                           

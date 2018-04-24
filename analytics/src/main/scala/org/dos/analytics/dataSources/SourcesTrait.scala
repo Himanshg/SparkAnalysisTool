@@ -5,7 +5,7 @@ import org.apache.spark.sql.DataFrame
 
 trait SourcesTrait {
     
-    def getData(sql: SparkSession):DataFrame = {
+    def getData():DataFrame = {
       /*
        * To be implemented in base classes
        */

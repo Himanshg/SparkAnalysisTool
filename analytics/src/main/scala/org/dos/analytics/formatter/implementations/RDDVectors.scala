@@ -20,7 +20,7 @@ class RDDVectors extends InputFormatter{
       
       for (i<- 1 to f.size){
         
-        //TODO: remove the try catch block and handle manuakky
+        //TODO: remove the try catch block and handle manually
         try{
             arr.update(i-1, f.get(i-1).asInstanceOf[Double])  
         }catch{
@@ -31,7 +31,7 @@ class RDDVectors extends InputFormatter{
         
         
       }
-      arr.foreach(println)
+//      arr.foreach(println)
       Vectors.dense(arr)
       
     }) 

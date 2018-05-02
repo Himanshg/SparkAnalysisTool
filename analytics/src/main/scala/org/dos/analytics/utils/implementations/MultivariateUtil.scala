@@ -6,12 +6,11 @@ import org.apache.spark.mllib.stat.MultivariateStatisticalSummary
 import org.apache.spark.mllib.stat.Statistics
 import org.dos.analytics.utils.Utils
 
-object MultivariateStatsUtil extends Utils{
-  
+class MultivariateUtil extends Utils{
   override def analyse(rdd: Any) {
     
     
-    val data: RDD[Vector] = rdd.asInstanceOf[RDD[Vector]]
+    val data: RDD[Vector] = rdd.asInstanceOf[RDD[Vector]].cache()
     
     val summary: MultivariateStatisticalSummary = Statistics.colStats(data)
 

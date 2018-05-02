@@ -28,7 +28,6 @@ class HDFSModel extends SourcesTrait {
                           .config(conf)
                           .getOrCreate()  
     
-    
     val filePath = getFile() 
     val params = getParams(filePath)
     val filteredParams = getFilteredParams(params)  

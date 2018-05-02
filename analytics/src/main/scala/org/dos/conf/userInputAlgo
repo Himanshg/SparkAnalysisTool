@@ -1,2 +1,4 @@
 KMeansUtil
-MultivariateStatsUtil
+MultivariateUtil
+GaussianMixtureUtil
+LinearRegressionUtil

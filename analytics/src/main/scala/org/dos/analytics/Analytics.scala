@@ -14,7 +14,7 @@ import org.dos.analytics.provider.AlgoProvider
 import org.dos.analytics.formatter.implementations.RDDVectors
 
 import org.dos.analytics.utils.Utils
-import org.dos.analytics.utils.implementations.{KMeansUtil,MultivariateStatsUtil}
+import org.dos.analytics.utils.implementations._
 import org.dos.analytics.provider.DataProvider
 import org.apache.spark.sql.DataFrame
 import org.dos.analytics.formatter.InputFormatter

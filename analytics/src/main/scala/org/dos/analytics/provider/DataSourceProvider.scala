@@ -10,7 +10,7 @@ class DataSourceProvider {
       
       println("Enter Source of Input")
       
-      //TODO: to be automated
+      //TODO: to be automated with sourceInput file
       println("0. for HDFS" + "\n" +
               "1. for MongoDb")
               

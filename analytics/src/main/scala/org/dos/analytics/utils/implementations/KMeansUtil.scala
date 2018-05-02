@@ -12,7 +12,7 @@ class KMeansUtil extends Utils{
      // Cluster the data into two classes using KMeans
     
     //TODO: call I/p converter from any to required format
-    val data: RDD[Vector] = parsedData.asInstanceOf[RDD[Vector]]
+    val data: RDD[Vector] = parsedData.asInstanceOf[RDD[Vector]].cache()
     
     println("Enter Number of Clusters: ")
     val numClusters = readInt()
@@ -24,7 +24,7 @@ class KMeansUtil extends Utils{
     val clusters = KMeans.train(data, numClusters, numIterations)
     
     println("Final Centers: ")
-//    println(clusters.toPMML())
+    clusters.clusterCenters.toList.foreach(println)
   }
   
 }

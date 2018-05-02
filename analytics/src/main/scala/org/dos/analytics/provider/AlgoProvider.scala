@@ -8,16 +8,23 @@ class AlgoProvider {
     
     def getAlgo():String = {
       
-      println("0. Do KMeans Clustering" + "\n" + 
-              "1. Do Multivariate Statistics" )
-      
-      val option = readInt()
-      
+//      //TODO: To be automated using userInputAlgo File
+//      println("0. Do KMeans Clustering" + "\n" + 
+//              "1. Do Multivariate Statistics" )
+//      
+//      val option = readInt()
+//      
       val algoClasses = Source.fromFile(Constants.CONF_PATH + "/" + Constants.USER_INPUT_TO_ALGO )
                               .getLines
                               .toArray
       
-      val algoClass = algoClasses(option)
+      println(" Enter the Algorithm you want to apply ")
+                              
+      for(i <- 1 to algoClasses.length){
+        println(i-1 + " for " + algoClasses(i-1) )
+      }
+      
+      val algoClass = algoClasses(readInt())
       
       algoClass.toString()
       

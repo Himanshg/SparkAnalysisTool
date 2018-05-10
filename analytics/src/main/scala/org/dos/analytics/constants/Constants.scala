@@ -40,5 +40,13 @@ object Constants {
   
   final val DATA_FORMAT_IMPLEMENTATION = "org.dos.analytics.formatter.implementations."
   
+  final val DATA_SOURCE_CONF = "dataSource.conf"
+  
+  final val DATA_SOURCE = "dataSource.source"
+  
+  //final val HDFS_MODEL = "dataSource.sourceModel.hdfs"
+  
+  //final val MONGODB_MODEL = "dataSource.sourceModel.mongodb"
+  
   
 }

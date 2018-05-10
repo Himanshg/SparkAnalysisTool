@@ -8,7 +8,7 @@ class AlgoProvider {
     
     def getAlgo():String = {
       
-//      //TODO: To be automated using userInputAlgo File
+//      //TODO:(what else) To be automated using userInputAlgo File
 //      println("0. Do KMeans Clustering" + "\n" + 
 //              "1. Do Multivariate Statistics" )
 //      

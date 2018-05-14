@@ -17,9 +17,14 @@ import org.dos.analytics.dataSources.SourcesTrait
 import org.dos.analytics.provider.HDFSFileProvider
 
 import com.typesafe.config.ConfigFactory
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 class HDFSModel extends SourcesTrait {
 
+  Logger.getLogger("org").setLevel(Level.OFF)
+  //Logger.getLogger("akka").setLevel(Level.OFF)
+  
   var sql: SparkSession = null
   //TODO: (done)Add support for multiple files
 
@@ -107,13 +112,16 @@ class HDFSModel extends SourcesTrait {
 
       /*TODO: read allParams from json*/
       // val allParams = sql.read.csv(filePath).head() //we assume that file header is always present
-      val allParams = "id,id_android,speed,time,distance,rating,rating_bus,rating_weather,car_or_bus,linha"
-      schemaAndFilteredParams = getSchemaAndFilteredParams(allParams.toString(), tableCount)
+//      val allParams = "id,id_android,speed,time,distance,rating,rating_bus,rating_weather,car_or_bus,linha"
+      val tableName = filePath.split("/").last.split('.')(0)
+      val allParams = getSchema(tableName)//"lat,long,x,y,z,a,b"
+      
+      schemaAndFilteredParams = getSchemaAndFilteredParams(allParams.toString(), tableCount, tableName)
 
       /*fetch the data according to the format of the file in the hdfs*/
       if (fileExtension.equalsIgnoreCase("csv")) {
-        //tempDF = sql.read.schema(schemaAndFilteredParams._1).csv(hdfsHome.+(filePath))
-        tempDF = sql.read.schema(schemaAndFilteredParams._1).csv(filePath)
+        tempDF = sql.read.schema(schemaAndFilteredParams._1).csv(hdfsHome.+(filePath))
+//        tempDF = sql.read.schema(schemaAndFilteredParams._1).csv(filePath)
         //        tempDF.show()
       } else if (fileExtension.equalsIgnoreCase("json")) {
         tempDF = sql.read.schema(schemaAndFilteredParams._1).json(hdfsHome.+(filePath)) //TODO:this is not tested
@@ -128,6 +136,11 @@ class HDFSModel extends SourcesTrait {
     (dataDF, filteredParams.substring(1)) //filteredParams will be empty initially. This will put an extra comma in the beginnig. Hence substring(1).
   }
 
+  def getSchema(fileName: String): String = {
+    val hdfsHome = ConfigFactory.parseFile(new File(Constants.CONF_PATH + "/" + Constants.SYSTEM_CONF))
+      .getString(Constants.HDFS_SCHEMA + "." + fileName)
+    hdfsHome
+  }
   
   /**
  * @param tempDF	dataframe of complete table in the memory
@@ -137,7 +150,7 @@ class HDFSModel extends SourcesTrait {
 def filterTempDF(tempDF: DataFrame, filteredParams: String): DataFrame = {
     tempDF.createOrReplaceTempView("tempView")
     val filterDF = sql.sql("SELECT " + filteredParams + " FROM tempView")
-    filterDF.show()
+    //filterDF.show()
     sql.catalog.dropTempView("tempView")
     filterDF
   }
@@ -158,9 +171,9 @@ def filterTempDF(tempDF: DataFrame, filteredParams: String): DataFrame = {
 
       dataDF = dataDFInd.join(tempDFInd, Seq("columnindex")).drop("columnindex")
       dataDF.printSchema()
-      dataDFInd.show()
-      tempDFInd.show()
-      dataDF.show()
+      //dataDFInd.show()
+      //tempDFInd.show()
+      //dataDF.show()
     }
     dataDF
   }
@@ -181,21 +194,26 @@ def filterTempDF(tempDF: DataFrame, filteredParams: String): DataFrame = {
     file.getFile()
   }
 
-  def getSchemaAndFilteredParams(allParams: String, tableCount: Int): (StructType, String) = {
+  def getSchemaAndFilteredParams(allParams: String, tableCount: Int, tableName: String): (StructType, String) = {
 
     //indexing the parameters
-    val paramsArray = allParams.split(",")
+    val paramsArray = allParams.split(",").map(_.trim())  //TODO: put trim here
     // paramsArray(0) = paramsArray(0).substring(1)
     // paramsArray(paramsArray.size - 1) = paramsArray.last.dropRight(1)
 
-    var key = 0;
+    /*var key = 0;
     val keyedParamMap = paramsArray.map(param => {
       key = key + 1
       (key, param)
-    }).toMap
+    }).toMap*/
 
+    for(i<- 1 to paramsArray.length){
+       var displayName = "Table " + tableName + " - " + paramsArray(i-1)  //5 is for "Table"
+       println(i + ". " + displayName)
+     }
+    
     //TODO: (done) display the list of params on the screen and ask user to choose which features he wants to analyse.
-    keyedParamMap.foreach(e => println(e._1 + ". " + e._2))
+    //keyedParamMap.foreach(e => println(e._1 + ". " + e._2))
 
     print("Enter the feature number you want to choose (comma separated): ")
     val selectedFeatures = readLine()
@@ -207,7 +225,8 @@ def filterTempDF(tempDF: DataFrame, filteredParams: String): DataFrame = {
     //creating the list of selected features
     val selectedFeaturesArray = selectedFeatures.split(",")
     val featureList = selectedFeaturesArray.map(feature => {
-      val f = keyedParamMap.get(feature.toInt).get
+      //val f = keyedParamMap.get(feature.toInt).get
+      val f = paramsArray(feature.toInt-1)
       tableAlias + f
     })
     val features = featureList.mkString(",")

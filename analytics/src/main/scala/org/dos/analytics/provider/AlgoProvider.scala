@@ -21,10 +21,10 @@ class AlgoProvider {
       println(" Enter the Algorithm you want to apply ")
                               
       for(i <- 1 to algoClasses.length){
-        println(i-1 + " for " + algoClasses(i-1) )
+        println(i + ". " + algoClasses(i-1) )
       }
       
-      val algoClass = algoClasses(readInt())
+      val algoClass = algoClasses(readInt()-1)
       
       algoClass.toString()
       

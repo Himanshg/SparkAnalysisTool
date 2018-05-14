@@ -20,14 +20,18 @@ class RDDVectors extends InputFormatter{
       
       for (i<- 1 to f.size){
         
-        //TODO: remove the try catch block and handle manually
-        try{
-            arr.update(i-1, f.get(i-1).asInstanceOf[Double])  
+        
+        arr.update(i-1, f.get(i-1).toString().trim().toDouble)    //TODO: typecasting to double is required because kafka gives all data in string. This overhead can be removed if data format is correct
+        
+        //TODO:(done) remove the try catch block and handle manually
+        /*try{
+            arr.update(i-1, f.get(i-1).toString().trim().asInstanceOf[Double])  
         }catch{
           case e : Exception => {
-                arr.update(i-1, f.getInt(i-1).toDouble)
+                //arr.update(i-1, f.getInt(i-1).toDouble)
+            arr.update(i-1, f.get(i-1).toString().trim().toDouble)
              }
-        }
+        }*/
         
         
       }

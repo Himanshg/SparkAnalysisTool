@@ -44,6 +44,8 @@ object Constants {
   
   final val DATA_SOURCE = "dataSource.source"
   
+  final val HDFS_SCHEMA = "env.hdfs.schema"
+  
   //final val HDFS_MODEL = "dataSource.sourceModel.hdfs"
   
   //final val MONGODB_MODEL = "dataSource.sourceModel.mongodb"
